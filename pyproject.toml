@@ -23,7 +23,9 @@ dependencies = []
 co-scanner = "co_scanner.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/"
+Homepage = "https://github.com/DC1024/co-scanner"
+Repository = "https://github.com/DC1024/co-scanner"
+Issues = "https://github.com/DC1024/co-scanner/issues"
 
 [tool.setuptools]
 packages = ["co_scanner"]

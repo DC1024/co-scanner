@@ -66,7 +66,7 @@ for 每个核:
 ## 安装
 
 ```powershell
-git clone <repo> co-scanner
+git clone https://github.com/DC1024/co-scanner.git
 cd co-scanner
 
 # 方式一：直接跑，不安装
