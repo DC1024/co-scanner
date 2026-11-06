@@ -344,7 +344,9 @@ def test_report_many_cores() -> None:
 
 def test_doctor() -> None:
     print("\n== 环境体检 ==")
-    from co_scanner.doctor import FAIL, _AV, _CONFLICT, process_basenames, run
+    from co_scanner.doctor import (
+        _AV, _BENIGN_MONITOR, _CONFLICT, FAIL, process_basenames, run,
+    )
 
     rep = run()
     text = rep.render()
@@ -362,6 +364,8 @@ def test_doctor() -> None:
     check("能识别干扰进程", any(n in _CONFLICT for n in names))
     check("大小写不敏感", process_basenames([(9, 0, "HiPsTrAy.Exe")]) == {"hipstray"})
     check("无后缀名也兼容", process_basenames([(9, 0, "System")]) == {"system"})
+    # HWiNFO 是监控工具不是干扰项，不能混进冲突表里稀释真警告
+    check("HWiNFO 不算干扰", "hwinfo64" not in _CONFLICT and "hwinfo64" in _BENIGN_MONITOR)
 
 
 class _NoopProbe:

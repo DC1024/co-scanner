@@ -35,8 +35,12 @@ _CONFLICT = {
     "prime95": "Prime95",
     "cinebench": "Cinebench",
     "aida64": "AIDA64",
-    "hwinfo64": "HWiNFO（会读 MSR，但一般不冲突）",
 }
+
+# 压测时开着不但无害、反而有用的监控工具。
+# HWiNFO 要读 MSR，早年曾误传与本工具冲突，实际上各读各的互不影响；
+# 而它记录的电压/温度/有效频率正是事后分析要用的，不该劝人关掉。
+_BENIGN_MONITOR = {"hwinfo64": "HWiNFO", "hwinfo32": "HWiNFO"}
 
 # 常见国产/第三方安全软件，它们的驱动层常常拦截底层 I/O 驱动加载
 _AV = {
@@ -280,6 +284,14 @@ def _process_check(rep: Report) -> None:
         )
     else:
         rep.add("procs", "干扰进程", OK, f"无冲突进程（当前 {len(procs)} 个进程）")
+
+    # 监控工具单独一条：在跑是好事不是坏事，别混进「干扰进程」里稀释真警告
+    monitors = sorted({_BENIGN_MONITOR[n] for n in names if n in _BENIGN_MONITOR})
+    if monitors:
+        rep.add(
+            "monitor", "监控工具", OK,
+            f"{'、'.join(monitors)} 在运行（可保留，记录的数据正是事后分析要用的）",
+        )
 
     avs = sorted({_AV[n] for n in names if n in _AV})
     if avs:

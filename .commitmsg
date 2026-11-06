@@ -1,0 +1,17 @@
+doctor: 修正进程名匹配与 HWiNFO 误判
+
+两处判定失真，都会让 doctor 给出与实际相反的结论：
+
+1. 进程名未剥 .exe 后缀。enumerate_processes 返回的是 Toolhelp 的
+   szExeFile（形如 HipsDaemon.exe），而查表 key 写的是 hipsdaemon，
+   两者永不相等 —— 于是「安全软件」和「干扰进程」两项**永远报正常**。
+   火绒的 HipsDaemon 和 4 个驱动一直在跑，doctor 却说「未发现常见第三方
+   安全软件」。这种静默失效比报错更危险：报错会让人去查，报正常不会。
+   抽出 process_basenames() 做归一化，并补 5 项回归自测。
+
+2. HWiNFO 被列为干扰进程。它确实读 MSR，但与本工具各读各的，不冲突；
+   而它记录的电压/温度/有效频率正是事后分析要用的数据。原先只要开着
+   HWiNFO 就报 warn，属于假警告，会稀释真警告。改为单列「监控工具」
+   一项并标 ok。
+
+顺带：本仓库首次 git 提交（0.3.0）。
