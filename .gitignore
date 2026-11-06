@@ -16,6 +16,9 @@ co-report*.html
 # 用户自己的配置文件（含本机绝对路径）
 co-scanner.json
 
+# 提交信息草稿（git commit -F 用，避免 here-string 在 Git Bash 里被吞）
+.commitmsg
+
 # 演示与截图
 demo/*.png
 demo/*.html
