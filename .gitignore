@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# 扫描结果与报告：属于本机数据，不该进仓库
+co-scan-*.json
+co-scan-*.json.*
+*-verify.json
+co-report*.html
+*.verify
+
+# 用户自己的配置文件（含本机绝对路径）
+co-scanner.json
+
+# 演示与截图
+demo/*.png
+demo/*.html
+demo/cp.json
+demo/verify.json
+demo/config.sample.json
